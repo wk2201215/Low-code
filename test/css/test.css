@@ -1,0 +1,17 @@
+.draggable-item {
+  padding: 10px;
+  margin: 5px;
+  background-color: lightblue;
+  cursor: move;
+  width: 150px;
+}
+
+.drop-zone {
+  width: 300px;
+  height: 200px;
+  border: 2px dashed #000;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

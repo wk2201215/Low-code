@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test</title>
+    <link href="css/test.css" rel="stylesheet">
+</head>
+<body>
+  <div id="app">
+    <div
+      v-for="(item, index) in items"
+      :key="index"
+      draggable="true"
+      @dragstart="dragStart(item)"
+      @dragover.prevent
+      @drop="drop"
+      class="draggable-item"
+    >
+      {{ item.name }}
+    </div>
+     
+    <div class="drop-zone">
+      ドロップゾーン
+    </div>
+  </div>
+</body>
+<footer>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+  <script src="scripts/test.js"></script>
+</footer>
+</html>

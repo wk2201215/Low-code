@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ローコードエディタ - ドラッグ＆ドロップ</title>
+  <style>
+    .toolbox, .dropzone {
+      border: 1px solid #ccc;
+      padding: 20px;
+      margin: 10px;
+    }
+    .dropzone {
+      width: 100%;
+      height: 400px;
+      background-color: #f9f9f9;
+    }
+    .component {
+      padding: 10px;
+      background-color: #e0e0e0;
+      cursor: move;
+      margin-bottom: 5px;
+    }
+    .dropped-component {
+      padding: 10px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <h2>コンポーネントツールボックス</h2>
+    <div class="toolbox">
+      <div class="component" draggable="true" @dragstart="dragStart('button')">ボタン</div>
+      <div class="component" draggable="true" @dragstart="dragStart('input')">入力フィールド</div>
+    </div>
+ 
+    <h2>キャンバス</h2>
+    <div class="dropzone" @dragover.prevent @drop="dropComponent">
+      <div v-for="(comp, index) in droppedComponents" :key="index" class="dropped-component">
+        <component :is="comp.type"></component>
+      </div>
+    </div>
+ 
+    <h2>生成されたコード</h2>
+    <pre>{{ generatedCode }}</pre>
+  </div>
+ 
+  <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        droppedComponents: []
+      },
+      methods: {
+        dragStart(type) {
+          this.draggedComponentType = type;
+        },
+        dropComponent() {
+          this.droppedComponents.push({ type: this.draggedComponentType });
+        }
+      },
+      computed: {
+        generatedCode() {
+          return this.droppedComponents.map(comp => {
+            if (comp.type === 'button') {
+              return '<button>ボタン</button>';
+            } else if (comp.type === 'input') {
+              return '<input type="text" />';
+            }
+          }).join('\n');
+        }
+      }
+    });
+  </script>
+</body>
+</html>
+ 

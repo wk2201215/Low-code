@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ドラッグ＆ドロップ（並び替え）</title>
+<style>
+    .draggable-item {
+      padding: 10px;
+      margin: 5px;
+      background-color: lightgreen;
+      cursor: move;
+      width: 150px;
+    }
+    .drop-zone {
+      width: 100%;
+      height: 50px;
+      border: 2px dashed #000;
+      margin: 5px 0;
+    }
+</style>
+</head>
+<body>
+<div id="app">
+<div
+      v-for="(item, index) in items"
+      :key="index"
+      draggable="true"
+      @dragstart="dragStart(index)"
+      @dragover.prevent
+      @drop="drop(index)"
+      class="draggable-item"
+>
+      {{ item.name }}
+</div>
+</div>
+ 
+  <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+<script>
+    new Vue({
+      el: '#app',
+      data() {
+        return {
+          items: [
+            { name: "アイテム 1" },
+            { name: "アイテム 2" },
+            { name: "アイテム 3" }
+          ],
+          draggedIndex: null,
+        };
+      },
+      methods: {
+        dragStart(index) {
+          this.draggedIndex = index;
+        },
+        drop(index) {
+          const draggedItem = this.items.splice(this.draggedIndex, 1)[0];
+          this.items.splice(index, 0, draggedItem);
+          this.draggedIndex = null;
+        }
+      }
+    });
+</script>
+</body>
+</html>

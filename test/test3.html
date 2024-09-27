@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ドラッグ＆ドロップ</title>
+<style>
+    .draggable-item {
+      padding: 10px;
+      margin: 5px;
+      background-color: lightblue;
+      cursor: move;
+      width: 150px;
+    }
+ 
+    .drop-zone {
+      width: 300px;
+      height: 200px;
+      border: 2px dashed #000;
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+</style>
+</head>
+<body>
+<div id="app">
+<div
+      v-for="(item, index) in items"
+      :key="index"
+      draggable="true"
+      @dragstart="dragStart(item)"
+      @dragover.prevent
+      @drop="drop"
+      class="draggable-item"
+>
+      {{ item.name }}
+</div>
+ 
+    <div class="drop-zone">
+      ドロップゾーン
+</div>
+</div>
+ 
+  <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+<script>
+    new Vue({
+      el: '#app',
+      data() {
+        return {
+          items: [
+            { name: "アイテム 1" },
+            { name: "アイテム 2" },
+            { name: "アイテム 3" }
+          ],
+          draggedItem: null,
+        };
+      },
+      methods: {
+        dragStart(item) {
+          this.draggedItem = item;
+        },
+        drop() {
+          alert(`${this.draggedItem.name} がドロップされました`);
+          this.draggedItem = null;
+        }
+      }
+    });
+</script>
+</body>
+</html>

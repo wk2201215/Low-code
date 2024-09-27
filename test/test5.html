@@ -1,0 +1,89 @@
+自由に要素を動かせる
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>自由に動かせる要素</title>
+  <style>
+    .dropzone {
+      width: 100%;
+      height: 400px;
+      background-color: #f9f9f9;
+      position: relative;
+      border: 2px dashed #000;
+      margin-top: 20px;
+    }
+ 
+    .component {
+      width: 100px;
+      height: 50px;
+      background-color: lightblue;
+      position: absolute;
+      cursor: move;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <h2>キャンバス</h2>
+    <div class="dropzone" @drop="dropComponent" @dragover.prevent>
+      <div
+        v-for="(comp, index) in components"
+        :key="index"
+        class="component"
+        :style="{ top: comp.y + 'px', left: comp.x + 'px' }"
+        draggable="true"
+        @dragstart="dragStart(index, $event)"
+        @dragend="dragEnd"
+      >
+        {{ comp.name }}
+      </div>
+    </div>
+  </div>
+ 
+  <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        components: [
+          { name: 'ボタン 1', x: 0, y: 0 },
+          { name: 'ボタン 2', x: 150, y: 0 }
+        ],
+        draggedIndex: null,
+        offsetX: 0,
+        offsetY: 0
+      },
+      methods: {
+        dragStart(index, event) {
+          this.draggedIndex = index;
+          const component = this.components[index];
+          // マウス位置から要素の位置を引いた値をオフセットとして保存
+          this.offsetX = event.clientX - component.x;
+          this.offsetY = event.clientY - component.y;
+        },
+        dragEnd(event) {
+          if (this.draggedIndex !== null) {
+            // 要素の新しい位置をマウスの座標から計算
+            const x = event.clientX - this.offsetX;
+            const y = event.clientY - this.offsetY;
+            this.$set(this.components, this.draggedIndex, {
+              ...this.components[this.draggedIndex],
+              x: x,
+              y: y
+            });
+            this.draggedIndex = null;
+          }
+        },
+        dropComponent(event) {
+          // 他のコンポーネントがキャンバスにドロップされたときの処理を追加する場合
+        }
+      }
+    });
+  </script>
+</body>
+</html>
