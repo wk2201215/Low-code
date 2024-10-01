@@ -1,65 +1,104 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ドラッグ＆ドロップ（並び替え）</title>
-<style>
-    .draggable-item {
-      padding: 10px;
-      margin: 5px;
-      background-color: lightgreen;
-      cursor: move;
-      width: 150px;
-    }
-    .drop-zone {
-      width: 100%;
-      height: 50px;
-      border: 2px dashed #000;
-      margin: 5px 0;
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test</title>
+    <link href="css/test2.css" rel="stylesheet">
 </head>
+
 <body>
-<div id="app">
-<div
-      v-for="(item, index) in items"
-      :key="index"
-      draggable="true"
-      @dragstart="dragStart(index)"
-      @dragover.prevent
-      @drop="drop(index)"
-      class="draggable-item"
->
-      {{ item.name }}
-</div>
-</div>
- 
-  <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
-<script>
-    new Vue({
-      el: '#app',
-      data() {
-        return {
-          items: [
-            { name: "アイテム 1" },
-            { name: "アイテム 2" },
-            { name: "アイテム 3" }
-          ],
-          draggedIndex: null,
-        };
-      },
-      methods: {
-        dragStart(index) {
-          this.draggedIndex = index;
-        },
-        drop(index) {
-          const draggedItem = this.items.splice(this.draggedIndex, 1)[0];
-          this.items.splice(index, 0, draggedItem);
-          this.draggedIndex = null;
-        }
-      }
-    });
-</script>
+    <div id="app">
+        <div class="header">ヘッダー</div>
+        <div class="main">
+            <div class="sidebarmenu">サイドバー
+                <!-- トグルボタン -->
+                <button @click="toggleSidebar" class="toggle-button">
+                    {{ sidebarOpen ? "Close Sidebar" : "Open Sidebar" }}
+                </button>
+            </div>
+
+
+            <!-- サイドバー -->
+            <div :class="{'sidebar': true, 'sidebar-open': sidebarOpen}">
+                <h2>Sidebar Content</h2>
+                <p>This is the sidebar content.</p>
+                <!-- ドラッグ可能なアイテム -->
+                <div>
+                    <h3>コンポーネントをドラッグ</h3>
+                    <button @dragstart="startDrag('textbox', $event, 'input')" draggable="true">テキストボックス</button>
+                    <button @dragstart="startDrag('button', $event, 'button')" draggable="true">ボタン</button>
+                </div>
+                <button @click="toggleSidebar" class="toggle-button">X</button>
+                {{ sidebarOpen ? "Close Sidebar" : "Open Sidebar" }}
+                </button>
+            </div>
+
+            <!-- ドロップゾーン -->
+            <div class="dropzone" @drop="dropComponent" @dragover.prevent>
+                <div v-for="(comp, index) in components" :key="index"
+                    :class="['component', { selected: selectedComponent === index }]"
+                    :style="{ top: comp.y + 'px', left: comp.x + 'px', width: comp.width + 'px' }" draggable="true"
+                    @dragstart="dragStart(index, $event)" @dragend="dragEnd" @click="selectComponent(index)">
+                    <!-- テキストボックスまたはボタンを条件で表示 -->
+                    <template v-if="comp.type === 'textbox'">
+                        <input type="text" :placeholder="comp.placeholder" :style="{ width: comp.width + 'px' }" />
+                    </template>
+                    <template v-if="comp.type === 'button'">
+                        <button :style="{ width: comp.width + 'px' }">{{ comp.text }}</button>
+                    </template>
+                </div>
+            </div>
+            <div class="sidebarmenu2">サイドバー
+                <!-- トグルボタン -->
+                <button @click="toggleSidebar2" class="toggle-button2">
+                    {{ sidebarOpen2 ? "Close Sidebar2" : "Open Sidebar2" }}
+                </button>
+            </div>
+
+            <div :class="{'sidebar2': true, 'sidebar-open2': sidebarOpen2}">
+                <h2>Sidebar Content</h2>
+                <p>This is the sidebar content.</p>
+                <!-- 編集パネル -->
+                <div v-if="selectedComponent !== null" class="edit-panel">
+                    <h3>コンポーネント編集</h3>
+
+                    <!-- テキストボックスの場合の編集フォーム -->
+                    <template v-if="components[selectedComponent].type === 'textbox'">
+                        <label>
+                            プレースホルダー:
+                            <input type="text" v-model="components[selectedComponent].placeholder" />
+                        </label>
+                        <label>
+                            幅:
+                            <input type="number" v-model="components[selectedComponent].width" />
+                        </label>
+                    </template>
+
+                    <!-- ボタンの場合の編集フォーム -->
+                    <template v-if="components[selectedComponent].type === 'button'">
+                        <label>
+                            テキスト:
+                            <input type="text" v-model="components[selectedComponent].text" />
+                        </label>
+                        <label>
+                            幅:
+                            <input type="number" v-model="components[selectedComponent].width" />
+                        </label>
+                    </template>
+                </div>
+                <button @click="toggleSidebar2" class="toggle-button2">X</button>
+                    {{ sidebarOpen2 ? "Close Sidebar2" : "Open Sidebar2" }}
+                </button>
+            </div>
+        </div>
+    </div>
 </body>
+<footer>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> -->
+    <script src="scripts/test2.js"></script>
+</footer>
+
 </html>

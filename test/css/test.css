@@ -1,17 +1,48 @@
-.draggable-item {
-  padding: 10px;
-  margin: 5px;
-  background-color: lightblue;
-  cursor: move;
-  width: 150px;
-}
+/* .dragArea {
+    width: 100%;
+    height: 50px;
+    background-color: lightblue;
+    text-align: center;
+    line-height: 50px;
+    margin: 10px;
+    margin: 0 auto;
+  }
 
-.drop-zone {
-  width: 300px;
-  height: 200px;
-  border: 2px dashed #000;
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+div#dropArea1{
+    width: 900px;
+    height: 400px;
+    border: 1px solid black;
+    margin-top: 20px;
+    margin: 0 auto;
+    font-size: 5vmin;
+} */
+/* サイドバー */
+.sidebar {
+    width: 96px;
+    background-color: moccasin;
+    box-sizing: border-box;
+    border: 8px solid chocolate;
+    /* font-size: 5vmin; */
+  }
+  .sidebar2 {
+    width: 96px;
+    background-color: rgb(181, 255, 248);
+    box-sizing: border-box;
+    border: 8px solid rgb(30, 156, 210);
+    margin: 0 0 0 auto;
+  }
+  * {
+    margin: 0;
+    padding: 0;
+  }
+  .app {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .main {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+  }  

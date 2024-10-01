@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UIビルダー</title>
+  <style>
+    .dropzone {
+      width: 100%;
+      height: 400px;
+      background-color: #f9f9f9;
+      position: relative;
+      border: 2px dashed #000;
+      margin-top: 20px;
+    }
+ 
+    .component {
+      position: absolute;
+      cursor: move;
+    }
+ 
+    .selected {
+      border: 2px solid red;
+    }
+ 
+    .edit-panel {
+      margin-top: 20px;
+    }
+ 
+    .edit-panel input {
+      margin: 5px;
+      padding: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <h2>キャンバス</h2>
+   
+    <!-- ドロップゾーン -->
+    <div class="dropzone" @drop="dropComponent" @dragover.prevent>
+      <div
+        v-for="(comp, index) in components"
+        :key="index"
+        :class="['component', { selected: selectedComponent === index }]"
+        :style="{ top: comp.y + 'px', left: comp.x + 'px', width: comp.width + 'px' }"
+        draggable="true"
+        @dragstart="dragStart(index, $event)"
+        @dragend="dragEnd"
+        @click="selectComponent(index)"
+      >
+        <!-- テキストボックスまたはボタンを条件で表示 -->
+        <template v-if="comp.type === 'textbox'">
+          <input type="text" :placeholder="comp.placeholder" :style="{ width: comp.width + 'px' }" />
+        </template>
+        <template v-if="comp.type === 'button'">
+          <button :style="{ width: comp.width + 'px' }">{{ comp.text }}</button>
+        </template>
+      </div>
+    </div>
+ 
+    <!-- 編集パネル -->
+    <div v-if="selectedComponent !== null" class="edit-panel">
+      <h3>コンポーネント編集</h3>
+ 
+      <!-- テキストボックスの場合の編集フォーム -->
+      <template v-if="components[selectedComponent].type === 'textbox'">
+        <label>
+          プレースホルダー:
+          <input type="text" v-model="components[selectedComponent].placeholder" />
+        </label>
+        <label>
+          幅:
+          <input type="number" v-model="components[selectedComponent].width" />
+        </label>
+      </template>
+ 
+      <!-- ボタンの場合の編集フォーム -->
+      <template v-if="components[selectedComponent].type === 'button'">
+        <label>
+          テキスト:
+          <input type="text" v-model="components[selectedComponent].text" />
+        </label>
+        <label>
+          幅:
+          <input type="number" v-model="components[selectedComponent].width" />
+        </label>
+      </template>
+    </div>
+ 
+    <!-- ドラッグ可能なアイテム -->
+    <div>
+      <h3>コンポーネントをドラッグ</h3>
+      <button @dragstart="startDrag('textbox', $event, 'input')" draggable="true">テキストボックス</button>
+      <button @dragstart="startDrag('button', $event, 'button')" draggable="true">ボタン</button>
+    </div>
+  </div>
+ 
+  <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        components: [],
+        selectedComponent: null,
+        draggedComponent: null,
+        offsetX: 0,
+        offsetY: 0
+      },
+      methods: {
+        // ドラッグ開始時にコンポーネントのタイプを保持
+        startDrag(type, event, def) {
+          this.draggedComponent = { type, x: 0, y: 0, width: 150, placeholder: def, text: def };
+        },
+        // ドラッグ開始
+        dragStart(index, event) {
+          const component = this.components[index];
+          this.offsetX = event.clientX - component.x;
+          this.offsetY = event.clientY - component.y;
+        },
+        // ドラッグ終了時の位置更新
+        dragEnd(event) {
+          const x = event.clientX - this.offsetX;
+          const y = event.clientY - this.offsetY;
+          if (this.selectedComponent !== null) {
+            this.$set(this.components, this.selectedComponent, {
+              ...this.components[this.selectedComponent],
+              x: x,
+              y: y
+            });
+          }
+        },
+        // ドロップ処理
+        dropComponent(event) {
+          const x = event.clientX - this.offsetX;
+          const y = event.clientY - this.offsetY;
+          if (this.draggedComponent) {
+            this.draggedComponent.x = x;
+            this.draggedComponent.y = y;
+            this.components.push({ ...this.draggedComponent });
+            this.draggedComponent = null;
+          }
+        },
+        // コンポーネントを選択
+        selectComponent(index) {
+          this.selectedComponent = index;
+        }
+      }
+    });
+  </script>
+</body>
+</html>

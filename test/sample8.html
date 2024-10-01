@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>サイドバー</title>
+  <!-- Vue.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <style>
+    /* サイドバーのスタイル */
+    .sidebar {
+      width: 250px;
+      height: 100vh;
+      background-color: #f4f4f4;
+      position: fixed;
+      top: 0;
+      left: 0;
+      padding: 20px;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+    }
+
+    /* サイドバーが開いた状態 */
+    .sidebar-open {
+      transform: translateX(0);
+    }
+
+    /* ボタンのスタイル */
+    .toggle-button {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      padding: 10px 20px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <!-- トグルボタン -->
+    <button @click="toggleSidebar" class="toggle-button">
+      {{ sidebarOpen ? "Close Sidebar" : "Open Sidebar" }}
+    </button>
+
+    <!-- サイドバー -->
+    <div :class="{'sidebar': true, 'sidebar-open': sidebarOpen}">
+      <h2>Sidebar Content</h2>
+      <p>This is the sidebar content.</p>
+      <button @click="toggleSidebar" class="toggle-button">X</button>
+        {{ sidebarOpen ? "Close Sidebar" : "Open Sidebar" }}
+    </button>
+    </div>
+    
+  </div>
+
+  <script>
+    // Vueインスタンスの作成
+    new Vue({
+      el: '#app',
+      data: {
+        sidebarOpen: false // サイドバーの開閉状態を管理
+      },
+      methods: {
+        toggleSidebar() {
+          this.sidebarOpen = !this.sidebarOpen; // フラグを切り替える
+        }
+      }
+    });
+  </script>
+</body>
+</html>
