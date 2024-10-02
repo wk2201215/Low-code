@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UIビルダー</title>
+  <title>ドラッグ＆ドロップ＆編集</title>
   <style>
     .dropzone {
       width: 100%;
@@ -134,6 +134,8 @@
         dropComponent(event) {
           const x = event.clientX - this.offsetX;
           const y = event.clientY - this.offsetY;
+          // dropzone の位置とサイズを取得
+          const dropzoneRect = this.$refs.dropzone.getBoundingClientRect();
           if (this.draggedComponent) {
             this.draggedComponent.x = x;
             this.draggedComponent.y = y;

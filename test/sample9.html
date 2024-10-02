@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>要素移動制限</title>
+  <style>
+    .dropzone {
+      width: 80%;
+      height: 400px;
+      background-color: #f9f9f9;
+      position: relative;
+      border: 2px dashed #000;
+      margin-top: 20px;
+    }
+ 
+    .component {
+      position: absolute;
+      cursor: move;
+      padding: 10px;
+      background-color: lightblue;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <h2>キャンバス</h2>
+   
+    <!-- ドロップゾーン -->
+    <div class="dropzone" ref="dropzone" @dragover.prevent @drop="dropComponent">
+      <div
+        v-for="(comp, index) in components"
+        :key="index"
+        class="component"
+        :style="{ top: comp.y + 'px', left: comp.x + 'px' }"
+        @mousedown="startMove(index, $event)"
+      >
+        {{ comp.text }}
+      </div>
+    </div>
+ 
+    <!-- ドラッグ可能なコンポーネント -->
+    <div>
+      <h3>コンポーネントをドラッグ</h3>
+      <button @dragstart="startDrag('ボタン', $event)" draggable="true">ボタン</button>
+      <button @dragstart="startDrag('テキストボックス', $event)" draggable="true">テキストボックス</button>
+    </div>
+  </div>
+ 
+  <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        components: [],
+        draggedComponent: null,
+        offsetX: 0,
+        offsetY: 0,
+        movingComponent: null
+      },
+      methods: {
+        // 新しいコンポーネントのドラッグ開始
+        startDrag(text, event) {
+          this.draggedComponent = { text, x: 0, y: 0 };
+        },
+        // ドラッグ後のドロップ処理
+        dropComponent(event) {
+          const dropzoneRect = this.$refs.dropzone.getBoundingClientRect();
+          let x = event.clientX - dropzoneRect.left;
+          let y = event.clientY - dropzoneRect.top;
+ 
+          // ドロップゾーン内に収まるよう制限
+          if (x < 0) x = 0;
+          if (y < 0) y = 0;
+          if (x > dropzoneRect.width - 100) x = dropzoneRect.width - 100;
+          if (y > dropzoneRect.height - 30) y = dropzoneRect.height - 30;
+ 
+          if (this.draggedComponent) {
+            this.components.push({ ...this.draggedComponent, x: x, y: y });
+            this.draggedComponent = null;
+          }
+        },
+        // マウスで動かす機能の開始
+        startMove(index, event) {
+          const component = this.components[index];
+          this.movingComponent = index;
+          this.offsetX = event.clientX - component.x;
+          this.offsetY = event.clientY - component.y;
+ 
+          // マウスムーブで要素を動かす
+          window.addEventListener('mousemove', this.moveComponent);
+          window.addEventListener('mouseup', this.stopMove);
+        },
+        // 要素の移動
+        moveComponent(event) {
+          if (this.movingComponent !== null) {
+            const dropzoneRect = this.$refs.dropzone.getBoundingClientRect();
+            let x = event.clientX - this.offsetX;
+            let y = event.clientY - this.offsetY;
+ 
+            // ドロップゾーン内に座標を制限
+            if (x < 0) x = 0;
+            if (y < 0) y = 0;
+            if (x > dropzoneRect.width - 100) x = dropzoneRect.width - 100;
+            if (y > dropzoneRect.height - 30) y = dropzoneRect.height - 30;
+ 
+            // 選択されたコンポーネントの位置を更新
+            this.$set(this.components, this.movingComponent, {
+              ...this.components[this.movingComponent],
+              x: x,
+              y: y
+            });
+          }
+        },
+        // 要素の移動終了
+        stopMove() {
+          this.movingComponent = null;
+          window.removeEventListener('mousemove', this.moveComponent);
+          window.removeEventListener('mouseup', this.stopMove);
+        }
+      }
+    });
+  </script>
+</body>
+</html>

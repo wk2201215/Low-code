@@ -27,6 +27,7 @@
                 <!-- ドラッグ可能なアイテム -->
                 <div>
                     <h3>コンポーネントをドラッグ</h3>
+                    <button @dragstart="startDrag('text', $event, 'h3')" draggable="true">テキスト</button>
                     <button @dragstart="startDrag('textbox', $event, 'input')" draggable="true">テキストボックス</button>
                     <button @dragstart="startDrag('button', $event, 'button')" draggable="true">ボタン</button>
                 </div>
@@ -36,12 +37,15 @@
             </div>
 
             <!-- ドロップゾーン -->
-            <div class="dropzone" @drop="dropComponent" @dragover.prevent>
+            <div ref="dropzone" class="dropzone" @drop="dropComponent" @dragover.prevent>
                 <div v-for="(comp, index) in components" :key="index"
                     :class="['component', { selected: selectedComponent === index }]"
                     :style="{ top: comp.y + 'px', left: comp.x + 'px', width: comp.width + 'px' }" draggable="true"
                     @dragstart="dragStart(index, $event)" @dragend="dragEnd" @click="selectComponent(index)">
                     <!-- テキストボックスまたはボタンを条件で表示 -->
+                    <template v-if="comp.type === 'text'">
+                        <h3 :style="{ width: comp.width + 'px' }">{{ comp.text }}</h3>
+                    </template>
                     <template v-if="comp.type === 'textbox'">
                         <input type="text" :placeholder="comp.placeholder" :style="{ width: comp.width + 'px' }" />
                     </template>
@@ -63,7 +67,17 @@
                 <!-- 編集パネル -->
                 <div v-if="selectedComponent !== null" class="edit-panel">
                     <h3>コンポーネント編集</h3>
-
+                    <!-- h3の場合の編集フォーム -->
+                    <template v-if="components[selectedComponent].type === 'text'">
+                        <label>
+                            テキスト:
+                            <input type="text" v-model="components[selectedComponent].text" />
+                        </label>
+                        <label>
+                            幅:
+                            <input type="number" v-model="components[selectedComponent].width" />
+                        </label>
+                    </template>
                     <!-- テキストボックスの場合の編集フォーム -->
                     <template v-if="components[selectedComponent].type === 'textbox'">
                         <label>
@@ -89,9 +103,27 @@
                     </template>
                 </div>
                 <button @click="toggleSidebar2" class="toggle-button2">X</button>
-                    {{ sidebarOpen2 ? "Close Sidebar2" : "Open Sidebar2" }}
+                {{ sidebarOpen2 ? "Close Sidebar2" : "Open Sidebar2" }}
                 </button>
             </div>
+        </div>
+        <div class="footer">
+            フッター
+            <h2>生成されたコード</h2>
+            <!-- トグルボタン -->
+            <button @click="toggleSidebar3" class="toggle-button3">
+                {{ sidebarOpen3 ? "Close Sidebar3" : "Open Sidebar3" }}
+            </button>
+            <!-- サイドバー -->
+            <div :class="{'sidebar3': true, 'sidebar-open3': sidebarOpen3}">
+                <h2>Sidebar Content</h2>
+                <p>This is the sidebar content.</p>
+                <pre>{{ generatedCode }}</pre>
+                <button @click="toggleSidebar3" class="toggle-button3">X</button>
+                {{ sidebarOpen3 ? "Close Sidebar3" : "Open Sidebar3" }}
+                </button>
+            </div>
+            
         </div>
     </div>
 </body>
