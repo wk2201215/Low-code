@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>リアルタイムプレビュー機能</title>
+  <style>
+    .preview-area {
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-top: 10px;
+      min-height: 200px;
+      background-color: #f9f9f9;
+    }
+    textarea {
+      width: 100%;
+      height: 150px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <h1>リアルタイムプレビュー</h1>
+ 
+  <!-- 編集用のテキストエリア -->
+  <textarea id="editor" placeholder="ここにHTMLコードを入力してください..."></textarea>
+ 
+  <!-- リアルタイムでプレビューが表示されるエリア -->
+  <div class="preview-area" id="preview"></div>
+ 
+  <script>
+    // テキストエリアの入力が変わるたびにプレビューを更新する関数
+    document.getElementById("editor").addEventListener("input", function() {
+      // エディタの内容を取得
+      var editorContent = document.getElementById("editor").value;
+      // プレビューエリアにHTMLとして反映
+      document.getElementById("preview").innerHTML = editorContent;
+    });
+  </script>
+</body>
+</html>

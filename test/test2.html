@@ -109,7 +109,7 @@
         </div>
         <div class="footer">
             フッター
-            <h2>生成されたコード</h2>
+            生成されたコード
             <!-- トグルボタン -->
             <button @click="toggleSidebar3" class="toggle-button3">
                 {{ sidebarOpen3 ? "Close Sidebar3" : "Open Sidebar3" }}
@@ -123,7 +123,36 @@
                 {{ sidebarOpen3 ? "Close Sidebar3" : "Open Sidebar3" }}
                 </button>
             </div>
-            
+            プレビュー
+            <!-- トグルボタン -->
+            <button @click="toggleSidebar4" class="toggle-button4">
+                {{ sidebarOpen4 ? "Close Sidebar4" : "Open Sidebar4" }}
+            </button>
+            <!-- サイドバー -->
+            <div :class="{'sidebar4': true, 'sidebar-open4': sidebarOpen4}">
+                <h2>Sidebar Content</h2>
+                <p>This is the sidebar content.</p>
+                <!-- <pre>{{ generatedCode }}</pre> -->
+                <div class="preview-area" v-html="generatedCode"></div>
+                <button @click="toggleSidebar4" class="toggle-button4">X</button>
+                {{ sidebarOpen4 ? "Close Sidebar4" : "Open Sidebar4" }}
+                </button>
+            </div>
+            デバッグ
+            <!-- トグルボタン -->
+            <button @click="toggleSidebar5" class="toggle-button5">
+                {{ sidebarOpen5 ? "Close Sidebar5" : "Open Sidebar5" }}
+            </button>
+            <!-- サイドバー -->
+            <div :class="{'sidebar5': true, 'sidebar-open5': sidebarOpen5}">
+                <h2>Sidebar Content</h2>
+                <p>This is the sidebar content.</p>
+                <!-- <pre>{{ generatedCode }}</pre> -->
+                <div class="preview-area">{{components}}</div>
+                <button @click="toggleSidebar5" class="toggle-button5">X</button>
+                {{ sidebarOpen5 ? "Close Sidebar5" : "Open Sidebar5" }}
+                </button>
+            </div>
         </div>
     </div>
 </body>

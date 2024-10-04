@@ -146,3 +146,56 @@
     transform: translateX(0);
     z-index: 100;
   }
+  /* サイドバーのスタイル */
+  .sidebar4 {
+    /* width: 250px; */
+    /* width: 10%;
+    height: 100vh; */
+    width: 100%;
+    height: 100vh;
+    background-color: #f4f4f4;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+    z-index: 100;
+  }
+
+  /* サイドバーが開いた状態 */
+  .sidebar-open4 {
+    transform: translateX(0);
+    z-index: 100;
+  }
+
+  .preview-area {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-top: 10px;
+    min-height: 200px;
+    background-color: #f9f9f9;
+  }
+  /* サイドバーのスタイル */
+  .sidebar5 {
+    /* width: 250px; */
+    /* width: 10%;
+    height: 100vh; */
+    width: 100%;
+    height: 100vh;
+    background-color: #f4f4f4;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+    z-index: 100;
+  }
+  /* サイドバーが開いた状態 */
+  .sidebar-open5 {
+    transform: translateX(0);
+    z-index: 100;
+  }

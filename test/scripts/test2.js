@@ -1,7 +1,6 @@
 new Vue({
   el: '#app',
   data: {
-    droppedComponents: [],
     components: [],
     selectedComponent: null,
     draggedComponent: null,
@@ -9,7 +8,11 @@ new Vue({
     offsetY: 0,
     sidebarOpen: false, // サイドバーの開閉状態を管理
     sidebarOpen2: false, // サイドバーの開閉状態を管理
-    sidebarOpen3: false // サイドバーの開閉状態を管理
+    sidebarOpen3: false, // サイドバーの開閉状態を管理
+    sidebarOpen4: false, // サイドバーの開閉状態を管理
+    sidebarOpen5: false, // サイドバーの開閉状態を管理
+    // テキストエリアの内容を管理
+    inputContent: ''
   },
   methods: {
     // ドラッグ開始時にコンポーネントのタイプを保持
@@ -76,6 +79,12 @@ new Vue({
     },
     toggleSidebar3() {
       this.sidebarOpen3 = !this.sidebarOpen3; // フラグを切り替える
+    },
+    toggleSidebar4() {
+      this.sidebarOpen4 = !this.sidebarOpen4; // フラグを切り替える
+    },
+    toggleSidebar5() {
+      this.sidebarOpen5 = !this.sidebarOpen5; // フラグを切り替える
     }
   },
   computed: {
@@ -89,8 +98,10 @@ new Vue({
       // }).join('\n');
       return this.components.map(comp => {
         if (comp.type === 'button') {
-          return '<button>ボタン</button>';
-        } else if (comp.type === 'input') {
+          return '<button>'+comp.text+'</button>';
+        } else if (comp.type === 'text') {
+          return '<h3>'+comp.text+'</h3>';
+        } else if(comp.type === 'textbox'){
           return '<input type="text" />';
         }
       }).join('\n');

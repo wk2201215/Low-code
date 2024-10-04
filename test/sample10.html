@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>プレビュー機能のデモ</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            display: flex;
+            gap: 20px;
+        }
+        .preview {
+            border: 1px solid #ccc;
+            padding: 10px;
+            width: 300px;
+            height: 200px;
+            overflow-y: auto;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+
+<h1>プレビュー機能のデモ</h1>
+
+<div class="container">
+    <!-- 入力フォーム -->
+    <div>
+        <h2>内容を入力</h2>
+        <textarea id="contentInput" rows="10" cols="30" placeholder="ここに入力してください"></textarea>
+    </div>
+
+    <!-- プレビューエリア -->
+    <div>
+        <h2>プレビュー</h2>
+        <div class="preview" id="previewArea">
+            入力内容がここに表示されます。
+        </div>
+    </div>
+</div>
+
+<script>
+    // テキストエリアの内容が変更されるたびにプレビューエリアに反映させる
+    const contentInput = document.getElementById('contentInput');
+    const previewArea = document.getElementById('previewArea');
+
+    contentInput.addEventListener('input', function() {
+        previewArea.innerHTML = contentInput.value.replace(/\n/g, '<br>'); // 改行を反映させる
+    });
+</script>
+
+</body>
+</html>
