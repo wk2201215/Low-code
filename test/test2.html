@@ -118,7 +118,21 @@
             <div :class="{'sidebar3': true, 'sidebar-open3': sidebarOpen3}">
                 <h2>Sidebar Content</h2>
                 <p>This is the sidebar content.</p>
-                <pre>{{ generatedCode }}</pre>
+                <button @click="activeTab = 'html'">html</button>
+                <button @click="activeTab = 'css'">css</button>
+                <div class="content">
+                    <div v-if="activeTab === 'html'">
+                      <h3>HTML Content</h3>
+                      <p>This is the HTML content.</p>
+                      <textarea placeholder="Write HTML here..."></textarea>
+                      <pre>{{ generatedCode }}</pre>
+                    </div>
+                    <div v-if="activeTab === 'css'">
+                      <h3>CSS Content</h3>
+                      <p>This is the CSS content.</p>
+                      <textarea placeholder="Write CSS here..."></textarea>
+                    </div>
+                  </div>
                 <button @click="toggleSidebar3" class="toggle-button3">X</button>
                 {{ sidebarOpen3 ? "Close Sidebar3" : "Open Sidebar3" }}
                 </button>

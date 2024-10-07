@@ -12,7 +12,8 @@ new Vue({
     sidebarOpen4: false, // サイドバーの開閉状態を管理
     sidebarOpen5: false, // サイドバーの開閉状態を管理
     // テキストエリアの内容を管理
-    inputContent: ''
+    // inputContent: ''
+    activeTab: 'html'  // 初期タブをHTMLに設定
   },
   methods: {
     // ドラッグ開始時にコンポーネントのタイプを保持
@@ -21,9 +22,20 @@ new Vue({
     },
     // ドラッグ開始
     dragStart(index, event) {
+      this.selectedComponent = index;  // 選択されたコンポーネントのインデックスを追跡
       const component = this.components[index];
       this.offsetX = event.clientX - component.x;
       this.offsetY = event.clientY - component.y;
+    },
+    // ドロップ後にcomponentsを並び替える
+    sortComponentsByPosition() {
+      this.components.sort((a, b) => {
+        // x座標に基づいて昇順で並べ替える
+        // return a.x - b.x;
+
+        // y座標に基づいて昇順で並べ替える
+        return a.y - b.y;
+      });
     },
     // ドラッグ終了時の位置更新
     dragEnd(event) {
@@ -55,6 +67,8 @@ new Vue({
           y: y
         });
       }
+      this.selectedComponent = null; // ドラッグが終わったら選択を解除
+      this.sortComponentsByPosition();
     },
     // ドロップ処理
     dropComponent(event) {
@@ -66,26 +80,16 @@ new Vue({
         this.components.push({ ...this.draggedComponent });
         this.draggedComponent = null;
       }
+      // 新しいコンポーネントが追加された後に並べ替え
+      this.sortComponentsByPosition();
     },
     // コンポーネントを選択
-    selectComponent(index) {
-      this.selectedComponent = index;
-    },
-    toggleSidebar() {
-      this.sidebarOpen = !this.sidebarOpen; // フラグを切り替える
-    },
-    toggleSidebar2() {
-      this.sidebarOpen2 = !this.sidebarOpen2; // フラグを切り替える
-    },
-    toggleSidebar3() {
-      this.sidebarOpen3 = !this.sidebarOpen3; // フラグを切り替える
-    },
-    toggleSidebar4() {
-      this.sidebarOpen4 = !this.sidebarOpen4; // フラグを切り替える
-    },
-    toggleSidebar5() {
-      this.sidebarOpen5 = !this.sidebarOpen5; // フラグを切り替える
-    }
+    selectComponent(index) {this.selectedComponent = index;},
+    toggleSidebar() {this.sidebarOpen = !this.sidebarOpen;},
+    toggleSidebar2() {this.sidebarOpen2 = !this.sidebarOpen2;},
+    toggleSidebar3() {this.sidebarOpen3 = !this.sidebarOpen3;},
+    toggleSidebar4() {this.sidebarOpen4 = !this.sidebarOpen4;},
+    toggleSidebar5() {this.sidebarOpen5 = !this.sidebarOpen5;}
   },
   computed: {
     generatedCode() {
@@ -106,6 +110,11 @@ new Vue({
         }
       }).join('\n');
     }
+  },
+  mounted() {
+    // ドラッグ中の動きを追跡するためにwindowにmousemoveとmouseupイベントを登録
+    window.addEventListener('mousemove', this.dragMove);
+    window.addEventListener('mouseup', this.dragEnd);
   }
 });
 // console.log(this.data);
