@@ -1,6 +1,6 @@
 <?php 
 session_start(); 
-require "../DB/db-conect.php"; 
+require "../DB/db-connect.php"; 
 
 // データベース接続
 $pdo = new PDO($connect, USER, PASS);
