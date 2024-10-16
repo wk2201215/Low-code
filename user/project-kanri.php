@@ -9,6 +9,7 @@
     <title>プロジェクト管理</title>
 </head>
 <body>
+<a href="javascript:history.back()" class="arrow_btn arrow_01" "></a>
 
 <div id="app">
   <!-- ヘッダー -->

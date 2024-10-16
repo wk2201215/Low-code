@@ -10,11 +10,12 @@ $pdo = new PDO($connect, USER, PASS);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/acount-knari.css">
+    <link href="../css/acount-kanri.css" rel="stylesheet">
     <title>アカウント管理</title>
     
 </head>
 <body>
+<a href="javascript:history.back()" class="arrow_btn arrow_01"></a>
     <h1>アカウント管理</h1>
 
     <?php
