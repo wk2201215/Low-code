@@ -49,7 +49,7 @@ if (isset($_SESSION['user']['id'])) {
         <input type="text" id="name" name="name" value="<?= htmlspecialchars($user['name']) ?>" required>
 
         <label for="password">パスワード</label>
-        <input type="password" id="password" name="password" value="<?= htmlspecialchars($user['password']) ?>" required>
+        <input type="password" id="password" name="password" required>
 
         <button type="submit">更新</button>
     </form>

@@ -33,7 +33,7 @@ $pdo = new PDO($connect, USER, PASS);
         if ($row) {
             echo '<table>';
             echo '<tr><th>アカウントID</th><td>' . htmlspecialchars($row['acount_id']) . '</td></tr>';
-            echo '<tr><th>パスワード</th><td>' . htmlspecialchars($row['password']) . '</td></tr>';
+            echo '<tr><th>パスワード</th><td>**********</td></tr>';
             echo '<tr><th>名前</th><td>' . htmlspecialchars($row['name']) . '</td></tr>';
             echo '</table>';
 
