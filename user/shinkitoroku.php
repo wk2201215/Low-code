@@ -1,26 +1,46 @@
-<?php 
+<?php
 session_start();
 require "../DB/db-connect.php"; 
 
-
-
-$pdo = new PDO($connect, USER, PASS);
-
-// ユーザー削除処理
-if (isset($_POST['delete_user_id'])) {
-    $deleteUserId = $_POST['delete_user_id'];
-    $sql = 'DELETE FROM acount WHERE acount_id = ?';
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([$deleteUserId]);
-
-    echo "ユーザーID $deleteUserId が削除されました。";
+try {
+    $pdo = new PDO($connect, USER, PASS, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    ]);
+} catch (PDOException $e) {
+    die("データベース接続エラー: " . $e->getMessage());
 }
 
-// 全ユーザーの情報を取得
-$sql = 'SELECT acount_id, name, password FROM acount';
-$stmt = $pdo->query($sql);
-$users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// 新規登録処理
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = $_POST['email'] ?? '';
+    $password = $_POST['password'] ?? '';
+    $username = $_POST['username'] ?? '';
+
+    if ($email && $password && $username) {
+        // パスワードをハッシュ化
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+        // ユーザー登録
+        $sql = 'INSERT INTO acount (name, password, email) VALUES (:username, :password, :email)';
+        $stmt = $pdo->prepare($sql);
+
+        try {
+            $stmt->execute([
+                ':username' => $username,
+                ':password' => $hashedPassword,
+                ':email' => $email,
+            ]);
+            echo "ユーザー $username が登録されました。";
+        } catch (PDOException $e) {
+            echo "登録エラー: " . $e->getMessage();
+        }
+    } else {
+        echo "すべてのフィールドを入力してください。";
+    }
+}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="ja">

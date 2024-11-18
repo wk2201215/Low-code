@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <div class="container">
-        <button class="register-btn" onclick="location.href='register.php'">新規登録</button>
+        <button class="register-btn" onclick="location.href='shinkitoroku.php'">新規登録</button>
         <form action="" method="post">
             <?php if ($error): ?>
                 <p class="error"><?php echo htmlspecialchars($error); ?></p>
