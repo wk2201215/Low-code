@@ -1,5 +1,5 @@
 <?php
-require 'db_config.php'; // データベース設定ファイルをインクルード
+require 'db-connect.php'; // データベース設定ファイルをインクルード
 
 // フォームが送信されたときの処理
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

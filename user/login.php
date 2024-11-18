@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'db_config.php'; // データベース設定ファイルをインクルード
+require 'db-connect.php'; // データベース設定ファイルをインクルード
 
 // エラーメッセージ
 $error = "";
