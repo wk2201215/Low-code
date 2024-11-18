@@ -1,7 +1,6 @@
 <?php
 session_start();
-require '../db-connect.php'; // 適切な相対パスに修正
-// データベース設定ファイルをインクルード
+require "../DB/db-connect.php"; 
 
 // エラーメッセージ
 $error = "";

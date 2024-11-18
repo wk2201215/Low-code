@@ -1,32 +1,25 @@
-<?php
-require 'db-connect.php'; // データベース設定ファイルをインクルード
+<?php 
+session_start();
+require "../DB/db-connect.php"; 
 
-// フォームが送信されたときの処理
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = $_POST['email'] ?? '';
-    $password = $_POST['password'] ?? '';
-    $username = $_POST['username'] ?? '';
 
-    // バリデーション
-    if ($email && $password && $username) {
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-        // データベースにユーザー情報を挿入
-        $stmt = $pdo->prepare("INSERT INTO users (email, password, username) VALUES (:email, :password, :username)");
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':password', $hashed_password);
-        $stmt->bindParam(':username', $username);
+$pdo = new PDO($connect, USER, PASS);
 
-        if ($stmt->execute()) {
-            header("Location: login.php"); // 登録成功後、ログインページにリダイレクト
-            exit();
-        } else {
-            $error = "登録に失敗しました";
-        }
-    } else {
-        $error = "すべてのフィールドを入力してください";
-    }
+// ユーザー削除処理
+if (isset($_POST['delete_user_id'])) {
+    $deleteUserId = $_POST['delete_user_id'];
+    $sql = 'DELETE FROM acount WHERE acount_id = ?';
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$deleteUserId]);
+
+    echo "ユーザーID $deleteUserId が削除されました。";
 }
+
+// 全ユーザーの情報を取得
+$sql = 'SELECT acount_id, name, password FROM acount';
+$stmt = $pdo->query($sql);
+$users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
