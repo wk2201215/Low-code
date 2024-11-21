@@ -2,14 +2,14 @@
 session_start();
 require "../DB/db-connect.php"; 
 
-try {
-    $pdo = new PDO($connect, USER, PASS, [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    ]);
-} catch (PDOException $e) {
-    die("データベース接続エラー: " . $e->getMessage());
-}
+// try {
+    // $pdo = new PDO($connect, USER, PASS, [
+    //     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    //     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    // ]);
+// } catch (PDOException $e) {
+//     die("データベース接続エラー: " . $e->getMessage());
+// }
 
 // 新規登録処理
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
