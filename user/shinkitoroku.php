@@ -41,22 +41,90 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <title>新規登録</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>新規登録</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 20px;
+      width: 300px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .container h1 {
+      font-size: 18px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 8px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    .form-group input:focus {
+      border-color: #007BFF;
+      outline: none;
+    }
+    .btn-submit {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+      text-align: center;
+    }
+    .btn-submit:hover {
+      background-color: #0056b3;
+    }
+  </style>
 </head>
 <body>
-    <form method="POST" action="">
-        <label for="email">メールアドレス:</label>
-        <input type="email" id="email" name="email" required><br><br>
-        <label for="password">パスワード:</label>
-        <input type="password" id="password" name="password" required><br><br>
-        <label for="username">ユーザーネーム:</label>
-        <input type="text" id="username" name="username" required><br><br>
-        <button type="submit">新規登録</button>
+  <div class="container">
+    <h1>新規登録</h1>
+    <form action="#" method="post">
+      <div class="form-group">
+        <label for="email">メールアドレス</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label for="password">パスワード</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+      <div class="form-group">
+        <label for="name">名前</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+      <button type="submit" class="btn-submit">新規登録</button>
     </form>
+  </div>
 </body>
 </html>

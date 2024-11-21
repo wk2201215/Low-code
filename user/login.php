@@ -7,24 +7,40 @@ $error = "";
 
 // フォームが送信された場合
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // データベース接続
+    $conn = new mysqli($servername, $username, $password, $dbname);
+    if ($conn->connect_error) {
+        die("データベース接続失敗: " . $conn->connect_error);
+    }
+
     // フォームからの入力を取得
     $email = $_POST['email'];
     $pass = $_POST['password'];
 
     // ユーザーの存在確認
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
-    $stmt->execute([$email]);
-    $user = $stmt->fetch();
+    $sql = "SELECT * FROM users WHERE email = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-    if ($user && password_verify($pass, $user['password'])) {
-        // 認証成功、セッションIDの再生成
-        session_regenerate_id(true);
-        $_SESSION['email'] = $email;
-        header("Location: welcome.php"); // ログイン後のページにリダイレクト
-        exit();
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        // パスワードを照合
+        if (password_verify($pass, $row['password'])) {
+            // 認証成功、セッションを開始
+            $_SESSION['email'] = $email;
+            header("Location: welcome.php"); // ログイン後のページにリダイレクト
+            exit();
+        } else {
+            $error = "パスワードが間違っています。";
+        }
     } else {
-        $error = "メールアドレスまたはパスワードが間違っています。";
+        $error = "メールアドレスが見つかりません。";
     }
+
+    $stmt->close();
+    $conn->close();
 }
 ?>
 
